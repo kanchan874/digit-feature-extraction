@@ -20,11 +20,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static sample images & uploads
-static_dir = os.path.abspath("backend/static")
-os.makedirs(os.path.join(static_dir, "samples"), exist_ok=True)
-os.makedirs(os.path.join(static_dir, "uploads"), exist_ok=True)
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+# Serve static sample images & uploads (safe for serverless)
+try:
+    static_dir = os.path.abspath("backend/static")
+    os.makedirs(os.path.join(static_dir, "samples"), exist_ok=True)
+    os.makedirs(os.path.join(static_dir, "uploads"), exist_ok=True)
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+except Exception as err:
+    print(f"Static directory mounting skipped for serverless: {err}")
 
 # Register API routes
 app.include_router(api_router)
