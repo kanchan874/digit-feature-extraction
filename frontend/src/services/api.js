@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const rawBaseUrl = import.meta.env.VITE_API_URL || 'https://digit-feature-extraction.vercel.app/api';
+const API_BASE_URL = rawBaseUrl.replace(/\/+$/, '');
 
 export const extractFeaturesFromFile = async (file) => {
   const formData = new FormData();
